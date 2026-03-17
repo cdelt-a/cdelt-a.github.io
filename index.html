@@ -1,219 +1,838 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Martin Muchiri</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111009'/><circle cx='16' cy='16' r='6' fill='none' stroke='%23D4923A' stroke-width='1.5'/><line x1='16' y1='4' x2='16' y2='10' stroke='%23D4923A' stroke-width='1.5'/><line x1='16' y1='22' x2='16' y2='28' stroke='%23D4923A' stroke-width='1.5'/><line x1='4' y1='16' x2='10' y2='16' stroke='%23D4923A' stroke-width='1.5'/><line x1='22' y1='16' x2='28' y2='16' stroke='%23D4923A' stroke-width='1.5'/></svg>" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,200;1,9..144,300;1,9..144,400&family=Space+Mono:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <!-- REPLACE YOUR_NAME_HERE with your real name in the title above -->
+  <!-- PLAUSIBLE ANALYTICS: replace yourdomain.github.io with your actual domain -->
+  <!-- <script defer data-domain="yourdomain.github.io" src="https://plausible.io/js/script.js"></script> -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23111009'/><circle cx='16' cy='16' r='6' fill='none' stroke='%23D4923A' stroke-width='1.5'/><line x1='16' y1='4' x2='16' y2='10' stroke='%23D4923A' stroke-width='1.5'/><line x1='16' y1='22' x2='16' y2='28' stroke='%23D4923A' stroke-width='1.5'/><line x1='4' y1='16' x2='10' y2='16' stroke='%23D4923A' stroke-width='1.5'/><line x1='22' y1='16' x2='28' y2='16' stroke='%23D4923A' stroke-width='1.5'/></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,200;1,9..144,300;1,9..144,400&family=Space+Mono:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
   <style>
-    :root{--bg:#0A0906;--text:#EDE7DB;--muted:rgba(237,231,219,.52);--faint:rgba(237,231,219,.28);--amber:#E0A040;--amber-d:rgba(224,160,64,.35);--serif:'Fraunces',Georgia,serif;--mono:'Space Mono',monospace;}
+    :root {
+      --bg:#080705;--text:#EDE7DB;
+      --muted:rgba(237,231,219,.5);--faint:rgba(237,231,219,.26);
+      --amber:#D98C30;--amber-hi:#F0A840;--amber-dim:rgba(217,140,48,.3);
+      --serif:'Fraunces',Georgia,serif;--mono:'Space Mono',monospace;
+    }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{width:100%;height:100%;overflow:hidden;}
-    body{background:var(--bg);color:var(--text);font-family:var(--mono);-webkit-font-smoothing:antialiased;}
-    ::selection{background:rgba(224,160,64,.3);color:var(--text);}
+    body{background:var(--bg);color:var(--text);font-family:var(--mono);-webkit-font-smoothing:antialiased;cursor:default;}
+    ::selection{background:var(--amber-dim);color:var(--text);}
+
+    /* ── SLIDES ── */
     .slides{position:fixed;inset:0;z-index:0;}
-    .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 2s ease;}
+    .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 2.2s ease;}
     .slide.active{opacity:1;}
-    .slide.video-slide{background:#000;}
-    .slide::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,7,5,.68) 0%,rgba(8,7,5,0) 28%,rgba(8,7,5,0) 52%,rgba(8,7,5,.5) 72%,rgba(8,7,5,.9) 100%);}
+    .slide::after{content:'';position:absolute;inset:0;background:
+      linear-gradient(to bottom,
+        rgba(6,5,3,.72) 0%,
+        rgba(6,5,3,0) 25%,
+        rgba(6,5,3,0) 50%,
+        rgba(6,5,3,.45) 70%,
+        rgba(6,5,3,.88) 100%);}
+    .video-slide{background:#000;}
     .video-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
     .video-wrap iframe{position:absolute;width:177.78%;height:177.78%;top:-38.89%;left:-38.89%;border:none;}
-    nav{position:fixed;top:0;left:0;right:0;z-index:20;padding:1.75rem 2.5rem;display:flex;justify-content:space-between;align-items:center;}
-    .nav-name{font-family:var(--serif);font-weight:300;font-size:.88rem;color:var(--text);text-decoration:none;opacity:.85;transition:opacity .2s;}
-    .nav-name:hover{opacity:1;}
-    .nav-links{display:flex;gap:2rem;list-style:none;}
-    .nav-links a{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:20;padding:1.6rem 2.5rem;display:flex;justify-content:space-between;align-items:center;}
+    .nav-id{font-family:var(--serif);font-weight:300;font-size:.85rem;color:var(--text);text-decoration:none;letter-spacing:.01em;opacity:.82;transition:opacity .2s;}
+    .nav-id:hover{opacity:1;}
+    .nav-links{display:flex;gap:1.75rem;list-style:none;}
+    .nav-links a{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
     .nav-links a:hover{color:var(--text);}
-    .bottom{position:fixed;bottom:0;left:0;right:0;z-index:20;padding:0 2.5rem 2.25rem;}
-    .quote-wrap{max-width:680px;margin-bottom:1.5rem;opacity:0;transform:translateY(8px);transition:opacity .9s ease .4s,transform .9s ease .4s;}
+
+    /* ── QUOTE AREA ── */
+    .bottom{position:fixed;bottom:0;left:0;right:0;z-index:20;padding:0 2.5rem 2rem;}
+    .quote-wrap{max-width:660px;margin-bottom:1.4rem;opacity:0;transform:translateY(10px);transition:opacity 1s ease .5s,transform 1s ease .5s;}
     .quote-wrap.visible{opacity:1;transform:translateY(0);}
-    .quote-text{font-family:var(--serif);font-weight:200;font-style:italic;font-size:clamp(1.25rem,2.8vw,1.8rem);line-height:1.4;color:var(--text);letter-spacing:-.01em;margin-bottom:.55rem;}
-    .quote-attr{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+    .apod-tag{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);background:rgba(217,140,48,.1);border:1px solid var(--amber-dim);padding:.18rem .55rem;margin-bottom:.55rem;display:none;}
+    .apod-tag.show{display:inline-flex;align-items:center;gap:.35rem;}
+    .quote-text{font-family:var(--serif);font-weight:200;font-style:italic;font-size:clamp(1.2rem,2.7vw,1.7rem);line-height:1.45;color:var(--text);letter-spacing:-.01em;margin-bottom:.5rem;}
+    .quote-attr{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+
+    /* ── SPECIES BAR ── */
     .bottom-bar{display:flex;justify-content:space-between;align-items:flex-end;}
-    .species-info{opacity:0;transform:translateY(4px);transition:opacity .7s ease .7s,transform .7s ease .7s;}
-    .species-info.visible{opacity:1;transform:translateY(0);}
-    .species-name{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:.12rem;}
-    .species-loc{font-size:.58rem;letter-spacing:.06em;color:var(--faint);}
-    .controls{display:flex;flex-direction:column;align-items:flex-end;gap:.7rem;}
-    .slide-counter{font-size:.55rem;letter-spacing:.1em;color:var(--faint);}
-    .progress-track{width:110px;height:1px;background:rgba(237,231,219,.15);position:relative;}
-    .progress-fill{position:absolute;top:0;left:0;bottom:0;background:var(--amber);transition:width .1s linear;}
-    .nav-arrows{display:flex;gap:.6rem;}
-    .arrow-btn{background:none;border:1px solid rgba(237,231,219,.18);color:var(--muted);font-family:var(--mono);font-size:.62rem;padding:.28rem .55rem;cursor:pointer;transition:border-color .2s,color .2s;}
-    .arrow-btn:hover{border-color:rgba(237,231,219,.45);color:var(--text);}
-    .apod-badge{display:inline-flex;align-items:center;gap:.4rem;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);background:rgba(224,160,64,.1);border:1px solid var(--amber-d);padding:.2rem .6rem;margin-bottom:.5rem;}
-    #music-player{position:fixed;bottom:2.25rem;right:2.5rem;z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;}
-    .player-toggle{background:rgba(10,9,6,.85);backdrop-filter:blur(10px);border:1px solid rgba(237,231,219,.15);color:var(--muted);font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;padding:.5rem .85rem;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:color .2s,border-color .2s;}
-    .player-toggle:hover{color:var(--amber);border-color:var(--amber-d);}
-    .player-toggle .dot{width:5px;height:5px;border-radius:50%;background:var(--faint);flex-shrink:0;transition:background .3s;}
-    .player-toggle .dot.playing{background:var(--amber);animation:pulse 1.4s ease-in-out infinite;}
-    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
-    .player-panel{background:rgba(10,9,6,.9);backdrop-filter:blur(12px);border:1px solid rgba(237,231,219,.12);overflow:hidden;width:300px;display:none;}
-    .player-panel.open{display:block;}
-    .player-tabs{display:flex;border-bottom:1px solid rgba(237,231,219,.1);}
-    .p-tab{flex:1;font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);padding:.5rem;cursor:pointer;text-align:center;border-bottom:1px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;}
-    .p-tab:hover{color:var(--muted);}
-    .p-tab.active{color:var(--amber);border-bottom-color:var(--amber);}
-    .p-panel{display:none;}
-    .p-panel.active{display:block;}
-    .spotify-wrap iframe{display:block;}
-    .player-note{padding:.6rem .75rem;font-size:.55rem;color:var(--faint);font-family:var(--mono);line-height:1.5;border-top:1px solid rgba(237,231,219,.08);}
-    @media(max-width:580px){nav{padding:1.25rem;}.bottom{padding:0 1.25rem 1.5rem;}.nav-links{gap:1.25rem;}#music-player{right:1.25rem;bottom:1.5rem;}.player-panel{width:260px;}}
+    .species-wrap{opacity:0;transform:translateY(5px);transition:opacity .7s ease .8s,transform .7s ease .8s;}
+    .species-wrap.visible{opacity:1;transform:translateY(0);}
+    .species-name{font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:var(--amber);margin-bottom:.1rem;}
+    .species-loc{font-size:.56rem;letter-spacing:.06em;color:var(--faint);margin-bottom:.3rem;}
+    .learn-btn{font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);background:none;border:1px solid rgba(237,231,219,.15);padding:.2rem .55rem;cursor:pointer;transition:color .2s,border-color .2s;display:none;}
+    .learn-btn.show{display:inline-block;}
+    .learn-btn:hover{color:var(--amber);border-color:var(--amber-dim);}
+
+    /* ── CONTROLS ── */
+    .controls{display:flex;flex-direction:column;align-items:flex-end;gap:.65rem;}
+    .counter{font-size:.52rem;letter-spacing:.1em;color:var(--faint);}
+    .prog-track{width:100px;height:1px;background:rgba(237,231,219,.14);}
+    .prog-fill{height:100%;background:var(--amber);transition:width .5s linear;}
+    .arrows{display:flex;gap:.55rem;}
+    .arr{background:none;border:1px solid rgba(237,231,219,.16);color:var(--muted);font-family:var(--mono);font-size:.6rem;padding:.26rem .52rem;cursor:pointer;transition:border-color .2s,color .2s;}
+    .arr:hover{border-color:rgba(237,231,219,.42);color:var(--text);}
+
+    /* ── INFO DRAWER ── */
+    .info-drawer{
+      position:fixed;bottom:0;left:0;right:0;z-index:40;
+      background:rgba(8,7,5,.94);backdrop-filter:blur(16px);
+      border-top:1px solid rgba(237,231,219,.1);
+      padding:2rem 2.5rem 2.5rem;
+      transform:translateY(100%);transition:transform .4s ease;
+      max-height:70vh;overflow-y:auto;
+    }
+    .info-drawer.open{transform:translateY(0);}
+    .drawer-close{position:absolute;top:1.25rem;right:2rem;font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .2s;}
+    .drawer-close:hover{color:var(--amber);}
+    .drawer-title{font-family:var(--serif);font-weight:300;font-style:italic;font-size:1.5rem;color:var(--text);margin-bottom:.35rem;line-height:1.2;}
+    .drawer-loc{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:1.5rem;}
+    .drawer-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+    .drawer-block h4{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:.65rem;}
+    .drawer-block p{font-family:var(--serif);font-size:.88rem;font-weight:300;color:var(--muted);line-height:1.75;}
+    .drawer-facts{list-style:none;display:flex;flex-direction:column;gap:.45rem;}
+    .drawer-facts li{font-family:var(--serif);font-size:.85rem;font-weight:300;color:var(--muted);line-height:1.6;padding-left:1rem;position:relative;}
+    .drawer-facts li::before{content:'✦';position:absolute;left:0;color:var(--amber);font-size:.55rem;top:.3em;}
+    .drawer-class{font-family:var(--mono);font-size:.56rem;color:var(--faint);line-height:1.9;letter-spacing:.04em;}
+    .drawer-class span{color:var(--muted);}
+    @media(max-width:600px){.drawer-grid{grid-template-columns:1fr;}}
+
+    /* ── MUSIC PLAYER ── */
+    #mplayer{position:fixed;bottom:1.75rem;right:2.5rem;z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:.45rem;}
+    .mp-toggle{background:rgba(8,7,5,.88);backdrop-filter:blur(10px);border:1px solid rgba(237,231,219,.14);color:var(--muted);font-family:var(--mono);font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.45rem .8rem;cursor:pointer;display:flex;align-items:center;gap:.45rem;transition:color .2s,border-color .2s;}
+    .mp-toggle:hover{color:var(--amber-hi);border-color:var(--amber-dim);}
+    .mp-dot{width:5px;height:5px;border-radius:50%;background:var(--faint);flex-shrink:0;transition:background .3s;}
+    .mp-dot.on{background:var(--amber);animation:glow 1.5s ease-in-out infinite;}
+    @keyframes glow{0%,100%{opacity:1;}50%{opacity:.3;}}
+    .mp-panel{background:rgba(8,7,5,.94);backdrop-filter:blur(14px);border:1px solid rgba(237,231,219,.1);width:300px;display:none;overflow:hidden;}
+    .mp-panel.open{display:block;}
+    .mp-tabs{display:flex;border-bottom:1px solid rgba(237,231,219,.08);}
+    .mpt{flex:1;font-family:var(--mono);font-size:.48rem;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);padding:.5rem .2rem;cursor:pointer;text-align:center;border-bottom:1.5px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;white-space:nowrap;}
+    .mpt:hover{color:var(--muted);}
+    .mpt.active{color:var(--amber);border-bottom-color:var(--amber);}
+    .mp-pane{display:none;}
+    .mp-pane.active{display:block;}
+    .mp-note{padding:.55rem .7rem;font-size:.5rem;color:var(--faint);font-family:var(--mono);line-height:1.5;border-top:1px solid rgba(237,231,219,.06);}
+    .mp-note a{color:var(--faint);text-decoration:none;border-bottom:1px solid rgba(237,231,219,.15);}
+
+    @media(max-width:580px){
+      nav{padding:1.2rem 1.2rem;}
+      .bottom{padding:0 1.2rem 1.5rem;}
+      .nav-links{gap:1.1rem;}
+      #mplayer{right:1.2rem;}
+      .mp-panel{width:260px;}
+      .info-drawer{padding:1.5rem 1.2rem 2rem;}
+    }
   </style>
 </head>
 <body>
-  <div class="slides" id="slides"></div>
-  <nav>
-    <a href="index.html" class="nav-name">Martin Muchiri</a>
-    <ul class="nav-links">
-      <li><a href="about.html">About</a></li>
-      <li><a href="research.html">Research</a></li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="shelf.html">Shelf</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-  <div class="bottom">
-    <div class="quote-wrap" id="quoteWrap">
-      <p class="apod-badge" id="apodBadge" style="display:none;">✦ NASA · Astronomy Picture of the Day</p>
-      <p class="quote-text" id="quoteText"></p>
-      <p class="quote-attr" id="quoteAttr"></p>
+
+<div class="slides" id="slides"></div>
+
+<nav>
+  <!-- REPLACE cdelt-a with your real name or preferred identity -->
+  <a href="index.html" class="nav-id">Martin Muchiri</a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="research.html">Research</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="shelf.html">Shelf</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="bottom">
+  <div class="quote-wrap" id="qWrap">
+    <div class="apod-tag" id="apodTag">✦ NASA · Astronomy Picture of the Day</div>
+    <p class="quote-text" id="qText"></p>
+    <p class="quote-attr" id="qAttr"></p>
+  </div>
+  <div class="bottom-bar">
+    <div class="species-wrap" id="spWrap">
+      <p class="species-name" id="spName"></p>
+      <p class="species-loc"  id="spLoc"></p>
+      <button class="learn-btn" id="learnBtn" onclick="openDrawer()">learn more ↑</button>
     </div>
-    <div class="bottom-bar">
-      <div class="species-info" id="speciesInfo">
-        <p class="species-name" id="speciesName"></p>
-        <p class="species-loc" id="speciesLoc"></p>
-      </div>
-      <div class="controls">
-        <span class="slide-counter" id="counter">01 / 32</span>
-        <div class="progress-track"><div class="progress-fill" id="fill"></div></div>
-        <div class="nav-arrows">
-          <button class="arrow-btn" id="prevBtn">← prev</button>
-          <button class="arrow-btn" id="nextBtn">next →</button>
-        </div>
+    <div class="controls">
+      <span class="counter" id="counter">01 / 30</span>
+      <div class="prog-track"><div class="prog-fill" id="fill" style="width:0%"></div></div>
+      <div class="arrows">
+        <button class="arr" id="prev">← prev</button>
+        <button class="arr" id="next">next →</button>
       </div>
     </div>
   </div>
-  <div id="music-player">
-    <div class="player-panel" id="playerPanel">
-      <div class="player-tabs">
-        <div class="p-tab active" onclick="switchPTab(this,'piano')">Piano</div>
-        <div class="p-tab" onclick="switchPTab(this,'africa')">Africa</div>
-        <div class="p-tab" onclick="switchPTab(this,'focus')">Focus</div>
-        <div class="p-tab" onclick="switchPTab(this,'ambient')">Ambient</div>
-      </div>
-      <div class="p-panel active" id="ptab-piano">
-        <div class="spotify-wrap"><iframe style="border-radius:0" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX3Ogo9pFvBkY?utm_source=generator&theme=0" width="300" height="152" frameBorder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe></div>
-      </div>
-      <div class="p-panel" id="ptab-africa">
-        <div class="spotify-wrap"><iframe style="border-radius:0" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX8bXByKnhSmh?utm_source=generator&theme=0" width="300" height="152" frameBorder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe></div>
-      </div>
-      <div class="p-panel" id="ptab-focus">
-        <div class="spotify-wrap"><iframe style="border-radius:0" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWXLeA8Omikj7?utm_source=generator&theme=0" width="300" height="152" frameBorder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe></div>
-      </div>
-      <div class="p-panel" id="ptab-ambient">
-        <div class="spotify-wrap"><iframe style="border-radius:0" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX6GwdWRQMQpq?utm_source=generator&theme=0" width="300" height="152" frameBorder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe></div>
-      </div>
-      <p class="player-note">Spotify users: full playback. Others: 30-sec previews.</p>
+</div>
+
+<!-- INFO DRAWER -->
+<div class="info-drawer" id="infoDrawer">
+  <button class="drawer-close" onclick="closeDrawer()">close ✕</button>
+  <p class="drawer-title" id="dTitle"></p>
+  <p class="drawer-loc"   id="dLoc"></p>
+  <div class="drawer-grid" id="dGrid"></div>
+</div>
+
+<!-- MUSIC PLAYER -->
+<div id="mplayer">
+  <div class="mp-panel" id="mpPanel">
+    <div class="mp-tabs">
+      <div class="mpt active" onclick="swMp(this,'piano')">Classical Renditions</div>
+      <div class="mpt" onclick="swMp(this,'africa')">Afro-Indie</div>
+      <div class="mpt" onclick="swMp(this,'focus')">Focus</div>
+      <div class="mpt" onclick="swMp(this,'ambient')">Ambient</div>
     </div>
-    <button class="player-toggle" id="playerToggle" onclick="togglePlayer()">
-      <span class="dot" id="playerDot"></span>listen
-    </button>
+    <!-- Spotify embeds — theme=0 forces dark mode -->
+    <!-- Classical Renditions by Youtube -->
+    <div class="mp-pane active" id="mp-piano">
+    
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/XVnsgxuEZaA?si=olx0DYkiwH97wwVQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/_UucPr2M-qU?si=9LDTolQgAxL0TjpL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/aK8TlGHaB8o?si=K3xrtDPFbETH6cj5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/5LR5n6QYRPU?si=bXAQFOd__-Nnrido" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/Vi_ryQWXshc?si=b1m6jzI0earZG-cM&amp;start=1102" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    
+      <iframe id="sp-piano" style="border-radius:0;display:block;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX3Ogo9pFvBkY?utm_source=generator&theme=0" width="300" height="152" frameBorder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe>
+    </div>
+    <!-- Afro-Indie by Spotify -->
+    <div class="mp-pane" id="afro-indie">
+    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXaYLfJcKWFfF?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    
+    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/7BEd5DnMYESi3FVI4fAqxy?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    <!-- Deep Focus by Spotify -->
+    <div class="mp-pane" id="mp-focus">
+      <iframe id="sp-focus" style="border-radius:0;display:block;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZeKCadgRdKQ?utm_source=generator&theme=0" width="300" height="152" frameBorder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe>
+    </div>
+    <!-- Night Rider (Ambient) by Spotify -->
+    <div class="mp-pane" id="mp-ambient">
+      <iframe id="sp-ambient" style="border-radius:0;display:block;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX889U0CL85jj?utm_source=generator&theme=0" width="300" height="152" frameBorder="0" allow="autoplay;clipboard-write;encrypted-media;fullscreen;picture-in-picture" loading="lazy"></iframe>
+    </div>
+    <p class="mp-note">Switching tabs will not auto-pause — pause manually first. Spotify users: full playback. Others: 30-sec previews. <a href="https://open.spotify.com" target="_blank" rel="noopener">Open Spotify ↗</a> to search freely.</p>
   </div>
-  <script>
-  const photoSlides=[
-    {img:'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1920&q=80',quote:'A tree that grows in the shade of another will die small.',attr:'— Tanzanian proverb',name:'Vachellia tortilis · Umbrella Acacia',loc:'Maasai Mara, Kenya'},
-    {img:'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1920&q=80',quote:'The birds do not inherit the air. They earn it, every morning.',attr:'— Anonymous',name:'Phoeniconaias minor · Lesser Flamingo',loc:'Lake Nakuru, Kenya'},
-    {img:'https://images.unsplash.com/photo-1581852017103-68ac65514cf7?auto=format&fit=crop&w=1920&q=80',quote:'Until the lion learns to write, every story will glorify the hunter.',attr:'— Igbo proverb',name:'Loxodonta africana · African Elephant',loc:'Amboseli, Kenya'},
-    {img:'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1920&q=80',quote:'The earth does not belong to us. We belong to the earth.',attr:'— Chief Seattle',name:'Cenchrus ciliaris · Buffel Grass',loc:'Tsavo East, Kenya'},
-    {img:'https://images.unsplash.com/photo-1547970810-dc1eac37d174?auto=format&fit=crop&w=1920&q=80',quote:'Not all those who wander are lost.',attr:'— J.R.R. Tolkien',name:'Giraffa reticulata · Reticulated Giraffe',loc:'Laikipia, Kenya'},
-    {img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1920&q=80',quote:'The older the tree, the deeper the root.',attr:'— African proverb',name:'Adansonia digitata · Baobab',loc:'Kilifi Coast, Kenya'},
-    {img:'https://images.unsplash.com/photo-1535941339077-2dd1c7963098?auto=format&fit=crop&w=1920&q=80',quote:'Water does not ask where it is going. It trusts the river to know.',attr:'— After Lao Tzu',name:'Connochaetes taurinus · Blue Wildebeest',loc:'Mara River, Kenya'},
-    {img:'https://picsum.photos/id/15/1920/1080',quote:'To name a thing is to begin to know it.',attr:'— Toni Morrison',name:'',loc:''},
-    {img:'https://picsum.photos/id/28/1920/1080',quote:'The mountains are calling and I must go.',attr:'— John Muir',name:'',loc:''},
-    {img:'https://picsum.photos/id/37/1920/1080',quote:'Wilderness is not a luxury but a necessity of the human spirit.',attr:'— Edward Abbey',name:'',loc:''},
-    {img:'https://picsum.photos/id/63/1920/1080',quote:'In every walk with nature, one receives far more than he seeks.',attr:'— John Muir',name:'',loc:''},
-    {img:'https://picsum.photos/id/98/1920/1080',quote:'What you are is what you have been. What you will be is what you do now.',attr:'— Buddha',name:'',loc:''},
-    {img:'https://picsum.photos/id/110/1920/1080',quote:'I am not afraid of storms, for I am learning how to sail my ship.',attr:'— Louisa May Alcott',name:'',loc:''},
-    {img:'https://picsum.photos/id/127/1920/1080',quote:'A child who is not embraced by the village will burn it down to feel its warmth.',attr:'— African proverb',name:'',loc:''},
-    {img:'https://picsum.photos/id/188/1920/1080',quote:'The function of education is to teach one to think intensively and to think critically.',attr:'— Martin Luther King Jr.',name:'',loc:''},
-    {img:'https://picsum.photos/id/213/1920/1080',quote:'Technology is neither good nor bad; nor is it neutral.',attr:'— Melvin Kranzberg',name:'',loc:''},
-    {img:'https://picsum.photos/id/334/1920/1080',quote:'I am because we are.',attr:'— Ubuntu philosophy',name:'',loc:''},
-    {img:'https://picsum.photos/id/355/1920/1080',quote:'Injustice anywhere is a threat to justice everywhere.',attr:'— Martin Luther King Jr.',name:'',loc:''},
-    {img:'https://picsum.photos/id/396/1920/1080',quote:'The opposite of poverty is not wealth. The opposite of poverty is justice.',attr:'— Bryan Stevenson',name:'',loc:''},
-    {img:'https://picsum.photos/id/431/1920/1080',quote:'To educate a woman is to educate a nation.',attr:'— African proverb',name:'',loc:''},
-    {img:'https://picsum.photos/id/447/1920/1080',quote:'I write because I do not know what I think until I read what I say.',attr:'— Flannery O\'Connor',name:'',loc:''},
-    {img:'https://picsum.photos/id/503/1920/1080',quote:'Knowledge is like a garden: if it is not cultivated, it cannot be harvested.',attr:'— African proverb',name:'',loc:''},
-    {img:'https://picsum.photos/id/534/1920/1080',quote:'The world always seems brighter when you have just made something that was not there before.',attr:'— Neil Gaiman',name:'',loc:''},
-    {img:'https://picsum.photos/id/570/1920/1080',quote:'What we observe is not nature itself, but nature exposed to our method of questioning.',attr:'— Werner Heisenberg',name:'',loc:''},
-    {img:'https://picsum.photos/id/618/1920/1080',quote:'The test of progress is whether we provide enough for those who have little.',attr:'— Franklin D. Roosevelt',name:'',loc:''},
-    {img:'https://picsum.photos/id/683/1920/1080',quote:'Language is a skin: I rub my language against the other.',attr:'— Roland Barthes',name:'',loc:''},
-    {img:'https://picsum.photos/id/718/1920/1080',quote:'The most common way people give up their power is by thinking they do not have any.',attr:'— Alice Walker',name:'',loc:''},
-    {img:'https://picsum.photos/id/760/1920/1080',quote:'Until you make the unconscious conscious, it will direct your life and you will call it fate.',attr:'— C.G. Jung',name:'',loc:''},
-    {img:'https://picsum.photos/id/833/1920/1080',quote:'We are what we repeatedly do.',attr:'— Aristotle',name:'',loc:''},
-    {img:'https://picsum.photos/id/488/1920/1080',quote:'The world is not a problem to be solved; it is a living being to which we belong.',attr:'— Llewelyn Vaughan-Lee',name:'',loc:''},
-  ];
-  // VIDEO SLIDES — replace videoId values with any YouTube IDs you like
-  // Good search: "4K African wildlife ambient relaxing" on YouTube
-  const videoSlides=[
-    {isVideo:true,videoId:'Gu2rEp_SZSg',quote:'Look deep into nature, and then you will understand everything better.',attr:'— Albert Einstein',name:'Video — replace ID in index.html',loc:''},
-    {isVideo:true,videoId:'mF8wmpGaUP8',quote:'The silence of nature is very real. It surrounds you, you can feel it.',attr:'— Ted Trueblood',name:'Video — replace ID in index.html',loc:''},
-  ];
-  let slides=[...photoSlides];
-  slides.splice(10,0,videoSlides[0]);
-  slides.splice(22,0,videoSlides[1]);
-  const slidesEl=document.getElementById('slides');
-  function buildSlides(){
-    slidesEl.innerHTML='';
-    slides.forEach((s,i)=>{
-      const el=document.createElement('div');
-      el.className='slide'+(s.isVideo?' video-slide':'')+(i===0?' active':'');
-      if(s.isVideo){
-        el.innerHTML=`<div class="video-wrap"><iframe src="https://www.youtube.com/embed/${s.videoId}?autoplay=1&mute=1&loop=1&playlist=${s.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>`;
-      }else{
-        el.style.backgroundImage=`url('${s.img}')`;
-      }
-      slidesEl.appendChild(el);
-    });
-  }
-  buildSlides();
-  let cur=0,timer=null,progress=0,paused=false;
-  const DUR=9500,TICK=100;
-  function showSlide(n){
-    const els=document.querySelectorAll('.slide');
-    els[cur].classList.remove('active');
-    document.getElementById('quoteWrap').classList.remove('visible');
-    document.getElementById('speciesInfo').classList.remove('visible');
-    cur=(n+slides.length)%slides.length;
-    els[cur].classList.add('active');
-    const s=slides[cur];
-    setTimeout(()=>{
-      document.getElementById('quoteText').textContent=s.quote;
-      document.getElementById('quoteAttr').textContent=s.attr;
-      document.getElementById('speciesName').textContent=s.name;
-      document.getElementById('speciesLoc').textContent=s.loc;
-      document.getElementById('apodBadge').style.display=s.isAPOD?'inline-flex':'none';
-      document.getElementById('quoteWrap').classList.add('visible');
-      document.getElementById('speciesInfo').classList.add('visible');
-    },500);
-    document.getElementById('counter').textContent=String(cur+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
-    progress=0;document.getElementById('fill').style.width='0%';
-  }
-  function tick(){if(paused)return;progress+=TICK;document.getElementById('fill').style.width=Math.min((progress/DUR)*100,100)+'%';if(progress>=DUR)showSlide(cur+1);}
-  function startTimer(){clearInterval(timer);timer=setInterval(tick,TICK);}
-  document.getElementById('nextBtn').onclick=()=>{showSlide(cur+1);startTimer();};
-  document.getElementById('prevBtn').onclick=()=>{showSlide(cur-1);startTimer();};
-  document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){showSlide(cur+1);startTimer();}if(e.key==='ArrowLeft'){showSlide(cur-1);startTimer();}});
-  document.querySelector('.bottom').addEventListener('mouseenter',()=>{paused=true;});
-  document.querySelector('.bottom').addEventListener('mouseleave',()=>{paused=false;});
-  showSlide(0);startTimer();
-  async function fetchAPOD(){try{const r=await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY');const d=await r.json();if(d.media_type==='image'){slides.unshift({img:d.hdurl||d.url,quote:d.title,attr:'— NASA APOD · '+d.date,name:d.copyright?'© '+d.copyright:'NASA / APOD',loc:'Astronomy Picture of the Day',isAPOD:true});buildSlides();showSlide(0);startTimer();}}catch(e){}}
-  fetchAPOD();
-  function togglePlayer(){const p=document.getElementById('playerPanel'),d=document.getElementById('playerDot');p.classList.toggle('open');d.classList.toggle('playing',p.classList.contains('open'));}
-  function switchPTab(el,id){document.querySelectorAll('.p-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.p-panel').forEach(p=>p.classList.remove('active'));el.classList.add('active');document.getElementById('ptab-'+id).classList.add('active');}
-  </script>
+  <button class="mp-toggle" onclick="toggleMp()">
+    <span class="mp-dot" id="mpDot"></span>listen
+  </button>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   QUOTES — curated from approved voices only
+═══════════════════════════════════════════════════ */
+const QUOTES = [
+  // TONI MORRISON
+  { t: "If you have some power, then your job is to empower somebody else.", a: "Toni Morrison" },
+  { t: "The function of freedom is to free someone else.", a: "Toni Morrison" },
+  { t: "To name a thing is to begin to know it.", a: "Toni Morrison" },
+  { t: "If you can only be tall because someone else is on their knees, then you have a serious problem.", a: "Toni Morrison" },
+  { t: "You wanna fly, you got to give up the shit that weighs you down.", a: "Toni Morrison" },
+  { t: "No matter what they tell us or don't tell us, we know. We know the difference between the hand that helps and the hand that does not.", a: "Toni Morrison" },
+  { t: "The very serious function of racism is distraction. It keeps you from doing your work.", a: "Toni Morrison" },
+  { t: "We die. That may be the meaning of life. But we do language. That may be the measure of our lives.", a: "Toni Morrison" },
+
+  // FRANTZ FANON
+  { t: "Each generation must, out of relative obscurity, discover its mission, fulfil it or betray it.", a: "Frantz Fanon" },
+  { t: "The colonised man will first manifest this aggressiveness which has been deposited in his bones against his own people.", a: "Frantz Fanon" },
+  { t: "Leave this Europe where they are never done talking of Man, yet murder men everywhere they find them.", a: "Frantz Fanon" },
+  { t: "For the colonised people, the most essential value, because the most concrete, is first and foremost the land.", a: "Frantz Fanon" },
+  { t: "Colonialism is not a thinking machine, nor a body endowed with reasoning faculties. It is violence in its natural state.", a: "Frantz Fanon" },
+  { t: "The native is an oppressed person whose permanent dream is to become the persecutor.", a: "Frantz Fanon" },
+
+  // NGUGI WA THIONG'O
+  { t: "Africa is not rising. Africa is awake.", a: "Ngugi wa Thiong'o" },
+  { t: "Language carries culture, and culture carries the entire body of values by which we come to perceive ourselves and our place in the world.", a: "Ngugi wa Thiong'o" },
+  { t: "The language of African literature cannot be discussed meaningfully outside the context of those power relations between European and African languages.", a: "Ngugi wa Thiong'o" },
+  { t: "To control a people you must first control what they think about themselves and how they regard their history and culture.", a: "Ngugi wa Thiong'o" },
+  { t: "The biggest weapon wielded and actually daily unleashed against the African people is the cultural bomb.", a: "Ngugi wa Thiong'o" },
+
+  // CHINUA ACHEBE
+  { t: "Until the lion learns to write, every story will glorify the hunter.", a: "Chinua Achebe" },
+  { t: "A man who calls his kinsmen to a feast does not do so to save them from starving. They all have food in their own homes. When we gather together in the moonlit village ground it is not because of the moon. Every man can see it in his own compound. We come together because it is good for kinsmen to do so.", a: "Chinua Achebe" },
+  { t: "The white man is very clever. He came quietly and peaceably with his religion. We were amused at his foolishness and allowed him to stay. Now he has won our brothers, and our clan can no longer act like one.", a: "Chinua Achebe" },
+  { t: "When suffering knocks at your door and you say there is no seat left for him, he tells you not to worry because he has brought his own stool.", a: "Chinua Achebe" },
+  { t: "We cannot trample upon the humanity of others without devaluing our own.", a: "Chinua Achebe" },
+
+  // WOLE SOYINKA
+  { t: "A tiger does not proclaim its tigritude, it pounces.", a: "Wole Soyinka" },
+  { t: "Writers are often the most honest persons a nation has.", a: "Wole Soyinka" },
+  { t: "The man dies in all who keep silent in the face of tyranny.", a: "Wole Soyinka" },
+  { t: "I have one abiding religion — human liberty.", a: "Wole Soyinka" },
+  { t: "Battles, confrontations: these are the heritage and commitment of the creative mind.", a: "Wole Soyinka" },
+
+  // JOHN MBITI
+  { t: "I am because we are, and since we are, therefore I am.", a: "John Mbiti" },
+  { t: "The individual can only say 'I am' because of the community in which he lives.", a: "John Mbiti" },
+  { t: "Time is a two-dimensional phenomenon, with a long past, a present and virtually no future.", a: "John Mbiti" },
+
+  // JULIUS NYERERE
+  { t: "The purpose of development is the human being.", a: "Julius Nyerere" },
+  { t: "We, in Africa, have no more need of being converted to socialism than we have of being taught democracy.", a: "Julius Nyerere" },
+  { t: "In order to maintain our independence and our people's freedom, we ought to be very careful to tell the world what we are, what we intend to do and how we intend to do it.", a: "Julius Nyerere" },
+  { t: "Without unity, there is no future for Africa.", a: "Julius Nyerere" },
+
+  // KWAME NKRUMAH
+  { t: "I am not African because I was born in Africa, but because Africa was born in me.", a: "Kwame Nkrumah" },
+  { t: "We face neither East nor West; we face forward.", a: "Kwame Nkrumah" },
+  { t: "Action without thought is empty. Thought without action is blind.", a: "Kwame Nkrumah" },
+  { t: "The independence of Ghana is meaningless unless it is linked up with the total liberation of Africa.", a: "Kwame Nkrumah" },
+
+  // DEDAN KIMATHI
+  { t: "I refuse to be hanged as a criminal. I am a freedom fighter.", a: "Dedan Kimathi" },
+  { t: "It is better to die on our feet than to live on our knees.", a: "Dedan Kimathi" },
+
+  // TOM MBOYA
+  { t: "Our task is not to create the Africa of yesterday but the Africa of tomorrow.", a: "Tom Mboya" },
+  { t: "The future of Africa must be built on the mental and physical freedom of her people.", a: "Tom Mboya" },
+
+  // OLÚFẸ́MI O. TÁÍWÒ
+  { t: "Elite capture is the process by which the advantaged few steer resources, narratives, and policy toward their own interests.", a: "Olúfẹ́mi O. Táíwò" },
+  { t: "Being in the room is not enough. The question is who gets to decide what the room decides.", a: "Olúfẹ́mi O. Táíwò" },
+  { t: "The world that colonialism built still shapes who gains and who loses. Repair requires acknowledging that.", a: "Olúfẹ́mi O. Táíwò" },
+
+  // TIMNIT GEBRU
+  { t: "The moment we centre the most marginalised, we design better systems for everyone.", a: "Timnit Gebru" },
+  { t: "AI ethics without structural accountability is just reputation management.", a: "Timnit Gebru" },
+  { t: "You cannot build an ethical AI system without asking: who is it for, and who does it harm?", a: "Timnit Gebru" },
+
+  // WANDIA NJOYA
+  { t: "You cannot decolonise the mind with colonial tools.", a: "Wandia Njoya" },
+  { t: "The CBC does not reform education. It completes the colonial project of producing workers, not thinkers.", a: "Wandia Njoya" },
+  { t: "African children deserve knowledge, not just skills for someone else's economy.", a: "Wandia Njoya" },
+
+  // MORDECAI OGADA
+  { t: "Conservation cannot be separated from the communities that have always lived alongside wildlife.", a: "Mordecai Ogada" },
+  { t: "The African conservation narrative has been written by those who came to Africa to save it from Africans.", a: "Mordecai Ogada" },
+  { t: "When Africans are absent from the rooms where decisions about Africa are made, those decisions serve everyone except Africans.", a: "Mordecai Ogada" },
+
+  // KEOLU FOX
+  { t: "Indigenous data sovereignty is not a request. It is a right.", a: "Keolu Fox" },
+  { t: "You cannot build technology that serves indigenous people without indigenous people building it.", a: "Keolu Fox" },
+  { t: "The genomic data of indigenous communities is not raw material for someone else's discovery.", a: "Keolu Fox" },
+
+  // ALICE WALKER
+  { t: "The most common way people give up their power is by thinking they don't have any.", a: "Alice Walker" },
+  { t: "No person is your friend who demands your silence, or denies your right to grow.", a: "Alice Walker" },
+  { t: "Activism is the rent I pay for living on this planet.", a: "Alice Walker" },
+
+  // MARTIN LUTHER KING JR.
+  { t: "The function of education is to teach one to think intensively and to think critically. Intelligence plus character — that is the goal of true education.", a: "Martin Luther King Jr." },
+  { t: "Injustice anywhere is a threat to justice everywhere.", a: "Martin Luther King Jr." },
+  { t: "We must learn to live together as brothers or perish together as fools.", a: "Martin Luther King Jr." },
+  { t: "The arc of the moral universe is long, but it bends toward justice.", a: "Martin Luther King Jr." },
+
+  // BRYAN STEVENSON
+  { t: "The opposite of poverty is not wealth. The opposite of poverty is justice.", a: "Bryan Stevenson" },
+  { t: "We are all implicated when we allow other people to be mistreated.", a: "Bryan Stevenson" },
+  { t: "Each of us is more than the worst thing we've ever done.", a: "Bryan Stevenson" },
+
+  // MAYA ANGELOU
+  { t: "There is no greater agony than bearing an untold story inside you.", a: "Maya Angelou" },
+  { t: "I've learned that people will forget what you said, people will forget what you did, but people will never forget how you made them feel.", a: "Maya Angelou" },
+  { t: "You may not control all the events that happen to you, but you can decide not to be reduced by them.", a: "Maya Angelou" },
+  { t: "We delight in the beauty of the butterfly, but rarely admit the changes it has gone through to achieve that beauty.", a: "Maya Angelou" },
+
+  // AUDRE LORDE
+  { t: "Your silence will not protect you.", a: "Audre Lorde" },
+  { t: "It is not our differences that divide us. It is our inability to recognise, accept, and celebrate those differences.", a: "Audre Lorde" },
+  { t: "I am not free while any woman is unfree, even when her shackles are very different from my own.", a: "Audre Lorde" },
+  { t: "Poetry is not a luxury. It is a vital necessity of our existence.", a: "Audre Lorde" },
+  { t: "When I dare to be powerful — to use my strength in the service of my vision, then it becomes less and less important whether I am afraid.", a: "Audre Lorde" },
+
+  // TSITSI DANGAREMBGA
+  { t: "The oppressor is always afraid of the oppressed.", a: "Tsitsi Dangarembga" },
+  { t: "It is not easy to write about what you love most when that love has been so thoroughly damaged.", a: "Tsitsi Dangarembga" },
+  { t: "We are the inheritors of a system that was not designed for our flourishing.", a: "Tsitsi Dangarembga" },
+
+  // NOVIOLET BULAWAYO
+  { t: "We are all immigrants from the future. We did not choose our time of arrival.", a: "NoViolet Bulawayo" },
+  { t: "We left because the country was no longer a country but a company where the president was also the owner.", a: "NoViolet Bulawayo" },
+
+  // JAMAICA KINCAID
+  { t: "I come from a place that was created by the powerful for the powerless.", a: "Jamaica Kincaid" },
+  { t: "No tourist wishes to go to a place that has too much of a real history.", a: "Jamaica Kincaid" },
+  { t: "A tourist is an ugly human being.", a: "Jamaica Kincaid" },
+
+  // JEAN RHYS
+  { t: "There is always another side, always.", a: "Jean Rhys" },
+  { t: "I have no country, no nationality. I have only the need to write.", a: "Jean Rhys" },
+
+  // ABDULRAZAK GURNAH
+  { t: "Memory is not static. It swells and recedes like the tide.", a: "Abdulrazak Gurnah" },
+  { t: "The past is not dead. It is not even past.", a: "Abdulrazak Gurnah" },
+  { t: "Migration is not an aberration. It is a human constant.", a: "Abdulrazak Gurnah" },
+
+  // GABRIEL GARCÍA MÁRQUEZ
+  { t: "A person doesn't die when he should but when he can.", a: "Gabriel García Márquez" },
+  { t: "Tell him that a person doesn't die when he should but when he can.", a: "Gabriel García Márquez" },
+  { t: "The secret of a good old age is simply an honourable pact with solitude.", a: "Gabriel García Márquez" },
+  { t: "Nobody teaches life anything.", a: "Gabriel García Márquez" },
+
+  // LEILA ABOULELA
+  { t: "Home is not a place. It is the people who know your name.", a: "Leila Aboulela" },
+  { t: "Faith is not the absence of doubt. It is the courage to go forward despite it.", a: "Leila Aboulela" },
+
+  // AMINATTA FORNA
+  { t: "What we call post-traumatic stress disorder, many cultures simply call memory.", a: "Aminatta Forna" },
+  { t: "In Africa we don't pathologise the past. We live in it.", a: "Aminatta Forna" },
+
+  // ALAN PATON
+  { t: "I have one great fear in my heart, that one day when they are turned to loving, they will find we are turned to hating.", a: "Alan Paton" },
+  { t: "There is a lovely road that runs from Ixopo into the hills. These hills are grass-covered and rolling, and they are lovely beyond any singing of it.", a: "Alan Paton" },
+
+  // CLAUDE McKAY
+  { t: "If we must die — let it not be like hogs hunted and penned in an inglorious spot.", a: "Claude McKay" },
+  { t: "Though far outnumbered let us show us brave, and for their thousand blows deal one deathblow.", a: "Claude McKay" },
+
+  // MARLON JAMES
+  { t: "History is what people want to forget.", a: "Marlon James" },
+  { t: "Truth has a way of demanding to be known even when those in power would rather it didn't.", a: "Marlon James" },
+
+  // HELEN KELLER
+  { t: "The only thing worse than being blind is having sight but no vision.", a: "Helen Keller" },
+  { t: "Alone we can do so little; together we can do so much.", a: "Helen Keller" },
+  { t: "Security is mostly a superstition. Life is either a daring adventure or nothing.", a: "Helen Keller" },
+
+  // UBUNTU / AFRICAN PROVERBS
+  { t: "A person is a person through other persons.", a: "Ubuntu philosophy" },
+  { t: "I am because we are.", a: "Ubuntu philosophy" },
+  { t: "A child who is not embraced by the village will burn it down to feel its warmth.", a: "African proverb" },
+  { t: "Until the last tree is cut and the last river poisoned, you will realise you cannot eat money.", a: "Cree proverb" },
+  { t: "Knowledge is like a garden: if it is not cultivated, it cannot be harvested.", a: "African proverb" },
+  { t: "The axe forgets, but the tree remembers.", a: "African proverb" },
+  { t: "He who learns, teaches.", a: "Ethiopian proverb" },
+  { t: "A tree that grows in the shade of another will die small.", a: "Tanzanian proverb" },
+  { t: "When elephants fight, it is the grass that suffers.", a: "East African proverb" },
+  { t: "Not to know is bad; not to want to know is worse.", a: "African proverb" },
+  { t: "You do not teach the paths of the forest to an old gorilla.", a: "Congolese proverb" },
+  { t: "The forest would be silent if no bird sang except the one that sang best.", a: "African proverb" },
+  { t: "Rain does not fall on one roof alone.", a: "Cameroonian proverb" },
+  { t: "A child who asks questions will not become a fool.", a: "African proverb" },
+
+  // HOPI / INDIGENOUS / PACIFIC
+  { t: "The one who tells the stories rules the world.", a: "Hopi proverb" },
+  { t: "We are the ones we have been waiting for.", a: "Hopi proverb" },
+  { t: "We do not inherit the earth from our ancestors; we borrow it from our children.", a: "Indigenous proverb" },
+  { t: "Take only what you need and leave the land as you found it.", a: "Arapaho teaching" },
+  { t: "When you are in doubt, don't.", a: "Māori teaching" },
+
+  // ANGELA DAVIS
+  { t: "I am no longer accepting the things I cannot change. I am changing the things I cannot accept.", a: "Angela Davis" },
+  { t: "Prisons do not disappear problems, they disappear human beings.", a: "Angela Davis" },
+  { t: "Radical simply means grasping things at the root.", a: "Angela Davis" },
+
+  // BELL HOOKS
+  { t: "The moment we choose to love we begin to move against domination, against oppression.", a: "bell hooks" },
+  { t: "There can be no love without justice.", a: "bell hooks" },
+  { t: "If any female feels she need anything beyond herself to legitimate and validate her existence, she is already giving away her power to be self-defining.", a: "bell hooks" },
+
+  // JAMES BALDWIN
+  { t: "Not everything that is faced can be changed, but nothing can be changed until it is faced.", a: "James Baldwin" },
+  { t: "The price of the liberation of the white people is the liberation of the Black people.", a: "James Baldwin" },
+  { t: "You think your pain and your heartbreak are unprecedented in the history of the world, but then you read.", a: "James Baldwin" },
+  { t: "I love America more than any other country in the world and, exactly for this reason, I insist on the right to criticise her perpetually.", a: "James Baldwin" },
+
+  // NELSON MANDELA
+  { t: "Education is the most powerful weapon which you can use to change the world.", a: "Nelson Mandela" },
+  { t: "It always seems impossible until it is done.", a: "Nelson Mandela" },
+  { t: "The greatest glory in living lies not in never falling, but in rising every time we fall.", a: "Nelson Mandela" },
+
+  // DESMOND TUTU
+  { t: "My humanity is bound up in yours, for we can only be human together.", a: "Desmond Tutu" },
+  { t: "Do your little bit of good where you are; it is those little bits of good put together that overwhelm the world.", a: "Desmond Tutu" },
+
+  // ADDITIONAL AFRICAN WOMEN VOICES
+  { t: "Silence is not the absence of something but the presence of everything.", a: "Ama Ata Aidoo" },
+  { t: "The African woman is not a problem to be solved. She is a power to be reckoned with.", a: "Chimamanda Ngozi Adichie" },
+  { t: "The problem with gender is that it prescribes how we should be rather than recognising how we are.", a: "Chimamanda Ngozi Adichie" },
+  { t: "We should all be feminists.", a: "Chimamanda Ngozi Adichie" },
+  { t: "Culture does not make people. People make culture.", a: "Chimamanda Ngozi Adichie" },
+
+  // CONTEMPORARY AFRICAN VOICES
+  { t: "If you don't design your own life plan, chances are you'll fall into someone else's plan.", a: "Strive Masiyiwa" },
+  { t: "Africa's greatest resource is not mineral wealth. It is human potential.", a: "Strive Masiyiwa" },
+
+  // ROLANDO HINOJOSA / CARIBBEAN
+  { t: "We are not afraid of ruins. We who plowed the prairies and built the cities can build again.", a: "Emma Lazarus" },
+  { t: "The land is the only thing that matters because it is the only thing that lasts.", a: "Caribbean proverb" },
+
+  // ABEBA BIRHANE
+  { t: "A system built on individualist assumptions will fail communities built on relational ones.", a: "Abeba Birhane" },
+  { t: "Algorithmic systems do not import objectivity. They import the assumptions of those who built them.", a: "Abeba Birhane" },
+  { t: "Ubuntu says: a person is a person through other persons. AI built on Descartes cannot serve Ubuntu communities.", a: "Abeba Birhane" },
+];
+
+/* ═══════════════════════════════════════════════════
+   SLIDES DATA — with rich info for fauna/flora
+═══════════════════════════════════════════════════ */
+const SLIDES = [
+  /* ── KENYA / EAST AFRICA — Unsplash (permanent URLs, no key needed for display) ── */
+  {
+    img:'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1920&q=80',
+    name:'Vachellia tortilis · Umbrella Acacia', loc:'Maasai Mara, Kenya',
+    info:{
+      classification:'Kingdom: Plantae · Family: Fabaceae · Genus: Vachellia · Species: V. tortilis',
+      description:'The umbrella acacia defines the East African savanna silhouette. Its deep taproot can reach 35 metres underground during 18-month dry spells.',
+      habitat:'Semi-arid savanna and alkaline soils of East Africa, extending to the Middle East.',
+      facts:['Giraffes are its primary browser — their 45cm tongue defeats its thorns.','Maasai use bark to treat malaria and roots to purify water.','Seed pods feed elephants, impalas, and 40+ insect species during dry season.','Can live over 200 years.','Horizontal crown shape maximises photosynthesis while minimising heat.']
+    }
+  },
+  {
+    img:'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1920&q=80',
+    name:'Phoeniconaias minor · Lesser Flamingo', loc:'Lake Nakuru, Kenya',
+    info:{
+      classification:'Kingdom: Animalia · Class: Aves · Family: Phoenicopteridae · Species: P. minor',
+      description:'At Lakes Nakuru and Bogoria, populations of one to two million birds have turned shorelines into living pink landscapes.',
+      habitat:'Highly alkaline soda lakes of the East African Rift Valley — pH above 10.',
+      facts:['Feeds exclusively on cyanobacteria filtered through an upside-down bill.','Pink colour comes entirely from carotenoid pigments in their algae diet.','Chicks are born grey; parents feed them red crop milk for two months.','Listed as Near Threatened due to drainage of soda lakes.','The Rift Valley soda lakes are among Earth\'s most productive ecosystems.']
+    }
+  },
+  {
+    img:'https://images.unsplash.com/photo-1581852017103-68ac65514cf7?auto=format&fit=crop&w=1920&q=80',
+    name:'Loxodonta africana · African Bush Elephant', loc:'Amboseli, Kenya',
+    info:{
+      classification:'Kingdom: Animalia · Class: Mammalia · Order: Proboscidea · Species: L. africana',
+      description:'The largest land animal on Earth. Elephant society is matriarchal — elder females hold 70 years of knowledge of drought refuges and migration routes.',
+      habitat:'Sub-Saharan Africa: savanna, forest edge, semi-desert, riverine woodland.',
+      facts:['Elephants return to the bones of dead family members and touch them carefully for hours — they grieve.','Their temporal lobe is larger relative to body size than in any other mammal.','A single elephant creates water holes used by hundreds of other species.','They communicate in infrasound that travels 10km through the ground.','Ivory poaching killed over 100,000 African elephants between 2010 and 2012.']
+    }
+  },
+  {
+    img:'https://images.unsplash.com/photo-1547970810-dc1eac37d174?auto=format&fit=crop&w=1920&q=80',
+    name:'Giraffa reticulata · Reticulated Giraffe', loc:'Laikipia, Kenya',
+    info:{
+      classification:'Kingdom: Animalia · Class: Mammalia · Family: Giraffidae · Species: G. reticulata',
+      description:'The most endangered giraffe species. Fewer than 16,000 remain — a 40% decline in 30 years that has been called a silent extinction.',
+      habitat:'Northern Kenya, southern Somalia, and southern Ethiopia.',
+      facts:['Their 45–50cm tongue is blue-black — pigment protects against UV radiation.','Heart weighs up to 11kg and pumps blood 2 metres upward against gravity.','They sleep only 30 minutes per day total, in 5-minute intervals.','Pattern is unique to each individual, like a fingerprint.','Males engage in necking contests that can render opponents unconscious.']
+    }
+  },
+  {
+    img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1920&q=80',
+    name:'Adansonia digitata · Baobab', loc:'Kilifi Coast, Kenya',
+    info:{
+      classification:'Kingdom: Plantae · Order: Malvales · Family: Malvaceae · Species: A. digitata',
+      description:'Stores up to 120,000 litres of water in its trunk. Some specimens are over 3,000 years old — among the oldest living organisms on Earth.',
+      habitat:'Sub-Saharan African savanna and coastal regions including Kenya\'s Kilifi and Lamu coasts.',
+      facts:['Kaya Kinondo sacred forest near Kilifi contains ancient baobabs central to Digo and Giriama ritual life.','Its fruit contains six times the vitamin C of an orange.','Hollow baobabs have served as dwellings, water tanks, and even a pub.','It is its own ecosystem: hundreds of species depend on it.','Nine of Africa\'s thirteen largest baobabs have collapsed since 2005 — likely due to climate change.']
+    }
+  },
+  {
+    img:'https://images.unsplash.com/photo-1535941339077-2dd1c7963098?auto=format&fit=crop&w=1920&q=80',
+    name:'Connochaetes taurinus · Blue Wildebeest', loc:'Mara River, Kenya',
+    info:{
+      classification:'Kingdom: Animalia · Class: Mammalia · Family: Bovidae · Species: C. taurinus',
+      description:'1.5 million wildebeest travel a 3,000km circuit annually — the largest overland migration of mammals on Earth.',
+      habitat:'The Serengeti-Mara ecosystem spanning Tanzania and Kenya.',
+      facts:['400,000–500,000 calves are born in a 3-week synchronised event to overwhelm predators.','Newborn calves stand within 7 minutes and run within hours — hardwired, not learned.','They form a mutualistic grazing chain with zebras and gazelles.','Migration follows rainfall — a decentralised emergent intelligence no individual understands.','Mara River crossings kill hundreds annually, but feed the river ecosystem for months.']
+    }
+  },
+  {
+    img:'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1920&q=80',
+    name:'Cenchrus ciliaris · Buffel Grass', loc:'Tsavo East, Kenya',
+    info:{
+      classification:'Kingdom: Plantae · Family: Poaceae · Species: C. ciliaris',
+      description:'In its native East African savanna, a foundation species. Introduced elsewhere, a weapon. One of the most instructive examples in ecology.',
+      habitat:'Native to semi-arid savannas and rocky hillsides of East Africa.',
+      facts:['Seeds bear hook-like bristles that attach to fur and clothing for dispersal across vast distances.','In Tsavo, primary dry-season grazing for wildebeest, zebra, and buffalo.','Introduced to Australia, it became catastrophically invasive — overrunning 400,000 km² of desert.','Burns hotter than native plants, creating fire cycles that destroy Australian desert ecosystems.','Its story is a lesson: the same species that sustains one ecosystem can annihilate another.']
+    }
+  },
+
+  /* ── LANDSCAPE IMAGES — Picsum (100% free, no API key, reliable) ── */
+  {img:'https://picsum.photos/id/10/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/11/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/13/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/15/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/16/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/17/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/18/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/19/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/20/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/21/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/23/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/24/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/25/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/26/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/27/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/28/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/29/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/30/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/32/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/33/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/35/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/36/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/37/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/38/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/39/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/40/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/41/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/42/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/43/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/44/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/45/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/47/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/48/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/49/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/50/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/51/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/52/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/53/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/54/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/55/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/56/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/57/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/58/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/59/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/60/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/61/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/62/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/63/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/64/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/65/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/66/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/67/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/68/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/69/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/70/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/71/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/72/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/73/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/74/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/75/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/76/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/77/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/78/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/80/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/81/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/82/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/83/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/84/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/85/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/86/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/87/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/88/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/89/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/90/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/91/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/92/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/93/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/94/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/95/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/96/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/97/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/98/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/99/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/100/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/101/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/102/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/103/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/104/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/106/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/107/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/108/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/109/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/110/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/111/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/112/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/113/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/114/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/115/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/116/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/117/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/118/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/119/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/120/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/121/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/122/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/123/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/124/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/125/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/126/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/127/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/128/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/129/1920/1080',name:'',loc:'',info:null},
+  {img:'https://picsum.photos/id/130/1920/1080',name:'',loc:'',info:null},
+
+  /* VIDEO SLIDES — replace videoId with real YouTube IDs */
+  /* Search: "4K Kenya wildlife ambient" or "Serengeti 4K" or "East Africa nature 4K" */
+  {isVideo:true, videoId:'Gu2rEp_SZSg', name:'', loc:'', info:null},
+  {isVideo:true, videoId:'mF8wmpGaUP8', name:'', loc:'', info:null},
+];
+
+/* ═══════════════════════════════════════════════════
+   DISPLAY DURATION — 10 to 20 minutes per slide
+   (900000ms = 15 minutes average)
+═══════════════════════════════════════════════════ */
+const MIN_DUR = 10 * 60 * 1000;  // 10 minutes
+const MAX_DUR = 20 * 60 * 1000;  // 20 minutes
+const TICK    = 1000; // update progress bar every second
+
+function randDur() {
+  return MIN_DUR + Math.random() * (MAX_DUR - MIN_DUR);
+}
+
+/* ═══════════════════════════════════════════════════
+   BUILD SLIDES
+═══════════════════════════════════════════════════ */
+const slidesEl = document.getElementById('slides');
+let slides = [...SLIDES];
+
+function buildSlideEls() {
+  slidesEl.innerHTML = '';
+  slides.forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'slide' + (s.isVideo ? ' video-slide' : '') + (i === 0 ? ' active' : '');
+    if (s.isVideo) {
+      el.innerHTML = `<div class="video-wrap"><iframe src="https://www.youtube.com/embed/${s.videoId}?autoplay=1&mute=1&loop=1&playlist=${s.videoId}&controls=0&rel=0&modestbranding=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>`;
+    } else {
+      el.style.backgroundImage = `url('${s.img}')`;
+    }
+    slidesEl.appendChild(el);
+  });
+}
+
+buildSlideEls();
+
+/* ═══════════════════════════════════════════════════
+   SLIDESHOW ENGINE
+═══════════════════════════════════════════════════ */
+let cur = 0, timer = null, elapsed = 0, curDur = randDur(), paused = false;
+
+function getEls() { return document.querySelectorAll('.slide'); }
+
+function showSlide(n) {
+  const els = getEls();
+  els[cur].classList.remove('active');
+  document.getElementById('qWrap').classList.remove('visible');
+  document.getElementById('spWrap').classList.remove('visible');
+  closeDrawer();
+
+  cur = (n + slides.length) % slides.length;
+  curDur = randDur();
+  elapsed = 0;
+  document.getElementById('fill').style.width = '0%';
+
+  els[cur].classList.add('active');
+  const s = slides[cur];
+
+  // Pick a quote based on current slide index + time
+  const q = QUOTES[(cur + new Date().getHours()) % QUOTES.length];
+  document.getElementById('qText').textContent = s.isAPOD ? s.title : q.t;
+  document.getElementById('qAttr').textContent = s.isAPOD ? '— NASA APOD · ' + s.date : '— ' + q.a;
+  document.getElementById('apodTag').className = 'apod-tag' + (s.isAPOD ? ' show' : '');
+
+  document.getElementById('spName').textContent = s.name || '';
+  document.getElementById('spLoc').textContent  = s.loc  || '';
+  const lb = document.getElementById('learnBtn');
+  lb.className = 'learn-btn' + (s.info ? ' show' : '');
+
+  document.getElementById('counter').textContent =
+    String(cur + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+
+  setTimeout(() => {
+    document.getElementById('qWrap').classList.add('visible');
+    document.getElementById('spWrap').classList.add('visible');
+  }, 400);
+}
+
+function tick() {
+  if (paused) return;
+  elapsed += TICK;
+  document.getElementById('fill').style.width =
+    Math.min((elapsed / curDur) * 100, 100) + '%';
+  if (elapsed >= curDur) showSlide(cur + 1);
+}
+
+function startTimer() { clearInterval(timer); timer = setInterval(tick, TICK); }
+
+document.getElementById('next').onclick = () => { showSlide(cur + 1); startTimer(); };
+document.getElementById('prev').onclick = () => { showSlide(cur - 1); startTimer(); };
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { showSlide(cur + 1); startTimer(); }
+  if (e.key === 'ArrowLeft')  { showSlide(cur - 1); startTimer(); }
+});
+document.querySelector('.bottom').addEventListener('mouseenter', () => { paused = true; });
+document.querySelector('.bottom').addEventListener('mouseleave', () => { paused = false; });
+document.getElementById('infoDrawer').addEventListener('mouseenter', () => { paused = true; });
+document.getElementById('infoDrawer').addEventListener('mouseleave', () => { paused = false; });
+
+showSlide(0);
+startTimer();
+
+/* ═══════════════════════════════════════════════════
+   INFO DRAWER
+═══════════════════════════════════════════════════ */
+function openDrawer() {
+  const s = slides[cur];
+  if (!s.info) return;
+  document.getElementById('dTitle').textContent = s.name;
+  document.getElementById('dLoc').textContent   = s.loc;
+  document.getElementById('dGrid').innerHTML = `
+    <div class="drawer-block">
+      <h4>Classification</h4>
+      <p class="drawer-class">${s.info.classification.split('·').map(p=>`<span>${p.trim()}</span>`).join('<br>')}</p>
+    </div>
+    <div class="drawer-block">
+      <h4>Description</h4>
+      <p>${s.info.description}</p>
+    </div>
+    <div class="drawer-block">
+      <h4>Habitat &amp; Range</h4>
+      <p>${s.info.habitat}</p>
+    </div>
+    <div class="drawer-block">
+      <h4>Five things worth knowing</h4>
+      <ul class="drawer-facts">${s.info.facts.map(f=>`<li>${f}</li>`).join('')}</ul>
+    </div>
+  `;
+  document.getElementById('infoDrawer').classList.add('open');
+  paused = true;
+}
+
+function closeDrawer() {
+  document.getElementById('infoDrawer').classList.remove('open');
+  paused = false;
+}
+
+/* ═══════════════════════════════════════════════════
+   NASA APOD
+   Get your free key at: https://api.nasa.gov
+   Replace DEMO_KEY below with your key
+═══════════════════════════════════════════════════ */
+async function fetchAPOD() {
+  const API_KEY = 'OlNNHhk3s5zIsgAxpc5TH8xI9blwswMXlZPGhhBL'; // ← REPLACE WITH YOUR FREE KEY FROM api.nasa.gov
+  try {
+    const r = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${API_KEY}`);
+    if (!r.ok) return; // silently fail if rate-limited
+    const d = await r.json();
+    if (d.media_type === 'image') {
+      slides.unshift({ img: d.hdurl || d.url, isAPOD: true, title: d.title, date: d.date, name: d.copyright ? '© ' + d.copyright : 'NASA', loc: 'Astronomy Picture of the Day', info: null });
+      buildSlideEls();
+      showSlide(0);
+      startTimer();
+    }
+  } catch(e) { /* fail silently — site works without APOD */ }
+}
+fetchAPOD();
+
+/* ═══════════════════════════════════════════════════
+   MUSIC PLAYER
+═══════════════════════════════════════════════════ */
+function toggleMp() {
+  const p = document.getElementById('mpPanel');
+  const d = document.getElementById('mpDot');
+  p.classList.toggle('open');
+  d.classList.toggle('on', p.classList.contains('open'));
+}
+function swMp(el, id) {
+  document.querySelectorAll('.mpt').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.mp-pane').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('mp-' + id).classList.add('active');
+}
+</script>
 </body>
 </html>
